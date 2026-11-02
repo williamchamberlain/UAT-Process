@@ -1,16 +1,98 @@
-# React + Vite
+---
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## 1. System Dependencies & Prerequisites
 
-Currently, two official plugins are available:
+To run Sentinel locally, two external tools must be installed on your machine:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. **[Node.js](https://nodejs.org/) (v18+) & npm**
+   * **Why it's needed:** Provides the JavaScript runtime and package manager required to install React libraries and run the Vite local development server.
+2. **[Ollama](https://ollama.com/)**
+   * **Why it's needed:** Serves as the local AI runtime. It runs the model on your machine's hardware with zero API keys and complete privacy.
 
-## React Compiler
+### Platform Installation Instructions
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+#### macOS
+* **Option A (GUI):** Download installers directly from [nodejs.org](https://nodejs.org/) and [ollama.com](https://ollama.com/).
+* **Option B (Homebrew):**
+  ```bash
+  brew install node
+  brew install --cask ollama
+  ```
 
-## Expanding the Oxlint configuration
+#### Windows
+* **Option A (GUI):** Download the standard `.msi` / `.exe` setup files from [nodejs.org](https://nodejs.org/) and [ollama.com](https://ollama.com/).
+* **Option B (winget / PowerShell):**
+  ```powershell
+  winget install OpenJS.NodeJS Ollama.Ollama
+  ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+#### Linux (Debian / Ubuntu / Arch)
+* **Debian/Ubuntu:**
+  ```bash
+  sudo apt update && sudo apt install -y nodejs npm
+  curl -fsSL https://ollama.com/install.sh | sh
+  ```
+* **Arch Linux:**
+  ```bash
+  sudo pacman -S nodejs npm
+  curl -fsSL https://ollama.com/install.sh | sh
+  sudo systemctl enable --now ollama
+  ```
+
+---
+
+## 2. Setting Up the AI Model
+
+Sentinel is configured by default to use **Qwen 2.5 (3B)** (`qwen2.5:3b`).
+
+### Why Qwen 2.5 (3B)?
+* **Speed:** Extremely low latency responses on consumer-grade hardware (including Apple Silicon and standard Intel/AMD laptops).
+* **Instruction Following:** Excellent at outputting strict, valid JSON for vagueness scoring and Jira draft generation.
+* **Semantic Triage:** Capable of understanding broken user workflows and symptoms to detect duplicate reports without brute-force keyword matching.
+
+Once Ollama is installed and running in your background/system tray, pull the model from your terminal:
+
+```bash
+ollama pull qwen2.5:3b
+```
+
+---
+
+## 3. Project Dependencies
+
+The project itself relies on several npm packages defined in `package.json`:
+
+* **`react` & `react-dom`:** Core UI component framework.
+* **`vite` & `@vitejs/plugin-react`:** High-speed development server and build tool.
+* **`tailwindcss` & `@tailwindcss/vite`:** Utility-first CSS styling engine.
+* **`lucide-react`:** Icon library for dashboard navigation, clipper controls, and status indicators.
+
+Install these dependencies by running:
+
+```bash
+cd sentinel-app
+npm install
+```
+
+---
+
+## 4. Running the Application
+
+1. **Ensure Ollama is running:** Make sure Ollama is active (default endpoint: `http://localhost:11434`).
+2. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+3. **Open the browser:** Click or navigate to the local server address displayed in your terminal (typically `http://localhost:5173`).
+
+---
+
+## 5. Application Modes
+
+* **App 1 (User Feedback & 30s Clipper):**
+  * Rolling 30-second screen replay buffer via standard browser `MediaRecorder` (`Alt + F10` shortcut).
+  * Lenient, AI-assisted vagueness checks with 1-click contextual suggestions.
+  * Adaptive forms that customize labels and severity options depending on whether you are submitting a bug or a feature suggestion.
+* **App 2 (Engineering Cluster Console):**
+  * Incremental, cached duplicate ticket scanner.
+  * Grouped evidence inspector with automated Jira draft synthesis via Qwen.
