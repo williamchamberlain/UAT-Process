@@ -1,8 +1,8 @@
----
+
 
 ## 1. System Dependencies & Prerequisites
 
-To run Sentinel locally, two external tools must be installed on your machine:
+To run the app locally, two external tools must be installed on your machine:
 
 1. **[Node.js](https://nodejs.org/) (v18+) & npm**
    * **Why it's needed:** Provides the JavaScript runtime and package manager required to install React libraries and run the Vite local development server.
@@ -43,12 +43,12 @@ To run Sentinel locally, two external tools must be installed on your machine:
 
 ## 2. Setting Up the AI Model
 
-Sentinel is configured by default to use **Qwen 2.5 (3B)** (`qwen2.5:3b`).
+When testing the UAT app I have used **Qwen 2.5 (3B)** (`qwen2.5:3b`).
 
 ### Why Qwen 2.5 (3B)?
 * **Speed:** Extremely low latency responses on consumer-grade hardware (including Apple Silicon and standard Intel/AMD laptops).
-* **Instruction Following:** Excellent at outputting strict, valid JSON for vagueness scoring and Jira draft generation.
-* **Semantic Triage:** Capable of understanding broken user workflows and symptoms to detect duplicate reports without brute-force keyword matching.
+
+
 
 Once Ollama is installed and running in your background/system tray, pull the model from your terminal:
 
